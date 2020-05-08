@@ -58,6 +58,8 @@ public class ColorfulTriangle extends Triangle {
         vertexBuffer = bb.asFloatBuffer();
         vertexBuffer.put(triangleCoords);
         vertexBuffer.position(0);
+
+
         ByteBuffer dd = ByteBuffer.allocateDirect(color.length * 4);
         dd.order(ByteOrder.nativeOrder());
         colorBuffer = dd.asFloatBuffer();

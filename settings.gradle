@@ -1,1 +1,1 @@
-include ':app', ':openGLES20Study'
+include ':app', ':openGLES20Study', ':openGLVideoRecord'
