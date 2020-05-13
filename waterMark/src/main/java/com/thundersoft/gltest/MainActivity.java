@@ -2,13 +2,11 @@ package com.thundersoft.gltest;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GLSurfaceView m_glSurfaceView;
     private CameraV2 m_camera;
+    private GLRender glRender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         //开启OpneGL画布
         m_glSurfaceView = new GLSurfaceView(this);
         m_glSurfaceView.setEGLContextClientVersion(2);
-        GLRender glRender = new GLRender();//渲染管线
+        //渲染管线
+        glRender = new GLRender();
         glRender.init(m_glSurfaceView, m_camera, MainActivity.this);
         m_glSurfaceView.setRenderer(glRender);
         m_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
@@ -64,4 +64,22 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            glRender.setCameraHeight(640);
+            glRender.setCameraWidth(480);
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            glRender.setCameraHeight(1920);
+            glRender.setCameraWidth(1080);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

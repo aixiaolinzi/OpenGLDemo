@@ -64,12 +64,32 @@ public class GLRender implements GLSurfaceView.Renderer {
     private static int bitmapWidth;
     private static int bitmapHeight;
 
+
+    private static int bitmapTextWidth;
+    private static int bitmapTextHeight;
     private int mTextureId = -1;
+
+
+    private static int time;
+
+
+    private int cameraWidth, cameraHeight;
+
+    public void setCameraWidth(int cameraWidth) {
+        this.cameraWidth = cameraWidth;
+    }
+
+    public void setCameraHeight(int cameraHeight) {
+        this.cameraHeight = cameraHeight;
+    }
 
     public void init(GLSurfaceView surfaceView, CameraV2 camera, Context context) {
         m_glSurfaceView = surfaceView;
         m_context = context;
         m_camera = camera;
+        time = 0;
+        cameraWidth = 720;
+        cameraHeight = 960;
     }
 
 
@@ -86,7 +106,7 @@ public class GLRender implements GLSurfaceView.Renderer {
 
         //获取水印图片纹理
         mMarkerTextureId = loadTexture(m_context, R.mipmap.image);
-        mTextureId = loadTextureText(m_context, R.mipmap.image);
+
 
         //水印渲染模块
         if (waterSignature == null) {
@@ -128,7 +148,12 @@ public class GLRender implements GLSurfaceView.Renderer {
 
         //绘制Camera图像
         //渲染窗口大小位置
-        GLES20.glViewport(0, 0, m_glSurfaceView.getWidth(), m_glSurfaceView.getHeight());
+//        GLES20.glViewport(0, 0, m_glSurfaceView.getWidth(), m_glSurfaceView.getHeight());
+        GLES20.glViewport(0, 0, cameraWidth, cameraHeight);
+
+        Log.e("ES20_ERROR", "m_glSurfaceView.getWidth() : " + m_glSurfaceView.getWidth()
+                + " m_glSurfaceView.getHeight():" + m_glSurfaceView.getHeight());
+
         //使用Shader
         GLES20.glUseProgram(program);
         //Shader中个字段
@@ -162,11 +187,13 @@ public class GLRender implements GLSurfaceView.Renderer {
         //Camera绘制完成
 
         //水印窗口大小位置
-        GLES20.glViewport(0, 0, bitmapWidth, bitmapHeight);
+        GLES20.glViewport(0, 0, bitmapWidth * 2, bitmapHeight * 2);
         waterSignature.drawFrame(mMarkerTextureId);
 
+
+        mTextureId = loadTextureText(m_context, R.mipmap.image);
         //水印窗口大小位置
-        GLES20.glViewport(500, 100, bitmapWidth * 2, bitmapHeight * 2);
+        GLES20.glViewport(500, 100, bitmapTextWidth * 2, bitmapTextHeight * 2);
         waterTextSignature.drawFrame(mTextureId);
     }
 
@@ -378,7 +405,8 @@ public class GLRender implements GLSurfaceView.Renderer {
      */
     public static int loadTextureText(Context context, int resourceId) {
 
-        String mstrTitle = "文字渲染到Bitmap!";
+        time++;
+        String mstrTitle = "文字渲染到Bitmap!+ " + time;
         Paint p = new Paint();
 
         String familyName = "serif";
@@ -421,8 +449,8 @@ public class GLRender implements GLSurfaceView.Renderer {
             GLES20.glDeleteTextures(1, textureObjectIds, 0);
             return 0;
         }
-        bitmapWidth = bitmap.getWidth();
-        bitmapHeight = bitmap.getHeight();
+        bitmapTextWidth = bitmap.getWidth();
+        bitmapTextHeight = bitmap.getHeight();
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureObjectIds[0]);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
