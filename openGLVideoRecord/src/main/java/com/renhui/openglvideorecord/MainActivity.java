@@ -1,6 +1,7 @@
 package com.renhui.openglvideorecord;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder holder) {
                 GroupFilter filter = new GroupFilter(getResources());
                 mCamera.setRenderer(filter);
-                filter.addFilter(new WaterMarkFilter().setMarkPosition(100, 600, 300, 300).setMark(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round)));
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.image);
+                filter.addFilter(new WaterMarkFilter().setMarkPosition(100, 600, 300, 300).setMark(bitmap));
 
             }
 
