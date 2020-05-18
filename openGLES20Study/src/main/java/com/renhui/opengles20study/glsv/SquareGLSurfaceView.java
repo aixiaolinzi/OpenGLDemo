@@ -19,10 +19,10 @@ public class SquareGLSurfaceView extends BaseGLSurfaceView {
     public SquareGLSurfaceView(Context context) {
         super(context);
 
-        // setRenderer(new SquareRenderer()); // 绘制正方形
+         setRenderer(new SquareRenderer()); // 绘制正方形
         // setRenderer(new CubeRenderer());  // 绘制立方体
 
-        setRenderer(new VaryMatrixCubeRenderer());
+//        setRenderer(new VaryMatrixCubeRenderer());
     }
 
     class SquareRenderer implements Renderer {
