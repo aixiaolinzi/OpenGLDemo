@@ -7,7 +7,7 @@ import android.hardware.camera2.CaptureResult;
  * Log helper class
  */
 public class CamLog {
-    private static final String GLOBAL_TAG = "CameraApp";
+    private static final String GLOBAL_TAG = "openGLVideoRecord";
 
     /**
      * {@link CamLog#DEBUG} is true if running in 'userdebug' variant.

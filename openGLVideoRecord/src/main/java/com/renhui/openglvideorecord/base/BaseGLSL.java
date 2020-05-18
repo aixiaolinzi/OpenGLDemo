@@ -4,6 +4,8 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.renhui.openglvideorecord.CamLog;
+
 import javax.microedition.khronos.opengles.GL10;
 
 /**
@@ -39,12 +41,12 @@ public class BaseGLSL {
     public static int createOpenGLProgram(String vertexSource, String fragmentSource) {
         int vertex = loadShader(GLES20.GL_VERTEX_SHADER, vertexSource);
         if (vertex == 0) {
-            Log.e(TAG, "loadShader vertex failed");
+            CamLog.e(TAG, "loadShader vertex failed");
             return 0;
         }
         int fragment = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentSource);
         if (fragment == 0) {
-            Log.e(TAG, "loadShader fragment failed");
+            CamLog.e(TAG, "loadShader fragment failed");
             return 0;
         }
         int program = GLES20.glCreateProgram();
@@ -55,7 +57,7 @@ public class BaseGLSL {
             int[] linkStatus = new int[1];
             GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, linkStatus, 0);
             if (linkStatus[0] != GLES20.GL_TRUE) {
-                Log.e(TAG, "Could not link program:" + GLES20.glGetProgramInfoLog(program));
+                CamLog.e(TAG, "Could not link program:" + GLES20.glGetProgramInfoLog(program));
                 GLES20.glDeleteProgram(program);
                 program = 0;
             }

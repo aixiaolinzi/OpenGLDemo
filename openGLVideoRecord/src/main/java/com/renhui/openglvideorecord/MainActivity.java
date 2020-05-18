@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+
+                CamLog.d("SurfaceView+  surfaceCreated create ");
                 GroupFilter filter = new GroupFilter(getResources());
                 mCamera.setRenderer(filter);
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.image);
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                CamLog.d("SurfaceView+  surfaceChanged change width" + width + " height " + height);
                 mCamera.open();
                 mCamera.setSurface(holder.getSurface());
                 mCamera.setPreviewSize(width, height);
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+                CamLog.d("SurfaceView+  surfaceDestroyed surfaceDestroyed ");
                 mCamera.stopPreview();
                 mCamera.close();
             }

@@ -10,6 +10,8 @@ import android.opengl.EGLSurface;
 import android.os.Build;
 import android.util.Log;
 
+import com.renhui.openglvideorecord.CamLog;
+
 /**
  * EGLHelper
  */
@@ -186,7 +188,7 @@ public class EglHelper {
 
     private void log(String log) {
         if (isDebug) {
-            Log.e("EGLHelper", log);
+            CamLog.e("EGLHelper", log);
         }
     }
 }

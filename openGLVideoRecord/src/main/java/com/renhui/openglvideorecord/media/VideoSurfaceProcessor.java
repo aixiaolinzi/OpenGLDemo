@@ -4,8 +4,8 @@ import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
 import android.opengl.GLES20;
-import android.util.Log;
 
+import com.renhui.openglvideorecord.CamLog;
 import com.renhui.openglvideorecord.base.BaseGLSL;
 import com.renhui.openglvideorecord.core.FrameBuffer;
 import com.renhui.openglvideorecord.core.IObserver;
@@ -93,7 +93,7 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         SurfaceTexture mInputSurfaceTexture = new SurfaceTexture(mInputSurfaceTextureId);
 
         Point size = mProvider.open(mInputSurfaceTexture);
-        Log.d(TAG, "Provider Opened . data size (x,y)=" + size.x + "/" + size.y);
+        CamLog.d(TAG, "Provider Opened . data size (x,y)=" + size.x + "/" + size.y);
         if (size.x <= 0 || size.y <= 0) {
             //todo 错误处理
             destroyGL(egl);
@@ -128,12 +128,12 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         rb.sourceHeight = mSourceHeight;
         rb.endFlag = false;
         rb.threadId = Thread.currentThread().getId();
-        Log.d(TAG, "Processor While Loop Entry");
+        CamLog.d(TAG, "Processor While Loop Entry");
         //要求数据源必须同步填充SurfaceTexture，填充完成前等待
         while (!mProvider.frame() && mGLThreadFlag) {
             mInputSurfaceTexture.updateTexImage();
             mInputSurfaceTexture.getTransformMatrix(mRenderer.getTextureMatrix());
-            Log.d(TAG, "timestamp:" + mInputSurfaceTexture.getTimestamp());
+//            CamLog.d(TAG, "timestamp:" + mInputSurfaceTexture.getTimestamp());
             sourceFrame.bindFrameBuffer(mSourceWidth, mSourceHeight);
             GLES20.glViewport(0, 0, mSourceWidth, mSourceHeight);
             mRenderer.draw(mInputSurfaceTextureId);
@@ -144,14 +144,14 @@ public class VideoSurfaceProcessor extends BaseGLSL {
             rb.textureTime = mInputSurfaceTexture.getTimestamp();
             observable.notify(rb);
         }
-        Log.d(TAG, "out of gl thread loop");
+        CamLog.d(TAG, "out of gl thread loop");
         synchronized (LOCK) {
             rb.endFlag = true;
             observable.notify(rb);
             mRenderer.destroy();
             destroyGL(egl);
             LOCK.notifyAll();
-            Log.d(TAG, "gl thread exit");
+            CamLog.d(TAG, "gl thread exit");
         }
     }
 
