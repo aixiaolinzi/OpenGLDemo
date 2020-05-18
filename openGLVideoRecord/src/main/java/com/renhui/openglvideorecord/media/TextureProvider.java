@@ -26,7 +26,7 @@ public class TextureProvider {
 
         @Override
         public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-            CamLog.d("TextureProvider", "onFrameAvailable");
+//            CamLog.d("TextureProvider", "onFrameAvailable");
             mFrameSem.drainPermits();
             mFrameSem.release();
         }

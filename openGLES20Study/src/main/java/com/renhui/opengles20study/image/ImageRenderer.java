@@ -76,11 +76,13 @@ public class ImageRenderer extends BaseGLSL implements GLSurfaceView.Renderer  {
     public ImageRenderer(Context context) throws IOException {
         mContext = context;
         mBitmap = BitmapFactory.decodeStream(mContext.getResources().getAssets().open("texture/fengj.png"));
+
         ByteBuffer bb = ByteBuffer.allocateDirect(sPos.length * 4);
         bb.order(ByteOrder.nativeOrder());
         bPos = bb.asFloatBuffer();
         bPos.put(sPos);
         bPos.position(0);
+
         ByteBuffer cc = ByteBuffer.allocateDirect(sCoord.length * 4);
         cc.order(ByteOrder.nativeOrder());
         bCoord = cc.asFloatBuffer();

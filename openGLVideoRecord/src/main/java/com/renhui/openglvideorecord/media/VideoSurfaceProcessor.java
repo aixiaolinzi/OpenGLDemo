@@ -129,7 +129,7 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         rb.endFlag = false;
         rb.threadId = Thread.currentThread().getId();
         CamLog.d(TAG, "Processor While Loop Entry");
-        //要求数据源必须同步填充SurfaceTexture，填充完成前等待
+        //要求数据源必须同步填充SurfaceTexture，填充完成前等待，1秒是有30帧的输出。
         while (!mProvider.frame() && mGLThreadFlag) {
             mInputSurfaceTexture.updateTexImage();
             mInputSurfaceTexture.getTransformMatrix(mRenderer.getTextureMatrix());

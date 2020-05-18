@@ -4,8 +4,8 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.opengl.EGLSurface;
-import android.util.Log;
 
+import com.renhui.openglvideorecord.CamLog;
 import com.renhui.openglvideorecord.core.RenderBean;
 import com.renhui.openglvideorecord.media.store.HardMediaData;
 import com.renhui.openglvideorecord.media.store.IHardStore;
@@ -34,7 +34,7 @@ public class SurfaceEncoder extends SurfaceShower {
         super.setOnDrawEndListener(new OnDrawEndListener() {
             @Override
             public void onDrawEnd(EGLSurface surface, RenderBean bean) {
-                Log.d(TAG, "onDrawEnd start-->");
+                CamLog.d(TAG, "onDrawEnd start-->");
                 if (bean.timeStamp != -1) {
                     bean.egl.setPresentationTime(surface, bean.timeStamp * 1000);
                 } else {
@@ -44,7 +44,7 @@ public class SurfaceEncoder extends SurfaceShower {
                     bean.egl.setPresentationTime(surface, bean.textureTime - startTime);
                 }
                 videoEncodeStep(false);
-                Log.e(TAG, "onDrawEnd end-->");
+                CamLog.e(TAG, "onDrawEnd end-->");
                 if (mListener != null) {
                     mListener.onDrawEnd(surface, bean);
                 }
@@ -85,7 +85,7 @@ public class SurfaceEncoder extends SurfaceShower {
     }
 
     private void openVideoEncoder() {
-        Log.d(TAG, "openVideoEncoder startTime-->");
+        CamLog.d(TAG, "openVideoEncoder startTime-->");
         if (mVideoEncoder == null) {
             try {
                 MediaFormat format = convertVideoConfigToFormat(mConfig.mVideo);
@@ -99,11 +99,11 @@ public class SurfaceEncoder extends SurfaceShower {
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, "openVideoEncoder endTime-->");
+        CamLog.d(TAG, "openVideoEncoder endTime-->");
     }
 
     private void closeVideoEncoder() {
-        Log.d(TAG, "closeEncoder");
+        CamLog.d(TAG, "closeEncoder");
         if (mVideoEncoder != null) {
             mVideoEncoder.stop();
             mVideoEncoder.release();
@@ -113,7 +113,7 @@ public class SurfaceEncoder extends SurfaceShower {
 
 
     private synchronized boolean videoEncodeStep(boolean isEnd) {
-        Log.d(TAG, "videoEncodeStep:" + isEncodeStarted + "/" + isEnd);
+        CamLog.d(TAG, "videoEncodeStep:" + isEncodeStarted + "/" + isEnd);
         if (isEncodeStarted) {
             if (isEnd) {
                 mVideoEncoder.signalEndOfInputStream();
@@ -121,7 +121,7 @@ public class SurfaceEncoder extends SurfaceShower {
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             while (true) {
                 int mOutputIndex = mVideoEncoder.dequeueOutputBuffer(info, TIME_OUT);
-                Log.i(TAG, "videoEncodeStep:mOutputIndex=" + mOutputIndex);
+                CamLog.i(TAG, "videoEncodeStep:mOutputIndex=" + mOutputIndex);
                 if (mOutputIndex >= 0) {
                     if ((info.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
                         info.size = 0;
@@ -134,7 +134,7 @@ public class SurfaceEncoder extends SurfaceShower {
                     if ((info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
                         closeVideoEncoder();
                         isEncodeStarted = false;
-                        Log.i(TAG, "videoEncodeStep: MediaCodec.BUFFER_FLAG_END_OF_STREAM ");
+                        CamLog.i(TAG, "videoEncodeStep: MediaCodec.BUFFER_FLAG_END_OF_STREAM ");
                         break;
                     }
                 } else if (mOutputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
