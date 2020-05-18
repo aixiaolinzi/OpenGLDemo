@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 GroupFilter filter = new GroupFilter(getResources());
                 mCamera.setRenderer(filter);
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.image);
-                filter.addFilter(new WaterMarkFilter().setMarkPosition(100, 600, 300, 300).setMark(bitmap));
+                filter.addFilter(new WaterMarkFilter().
+                        setMarkPosition(125, 600, 227 * 2, 39 * 2).setMark(bitmap));
 
             }
 
