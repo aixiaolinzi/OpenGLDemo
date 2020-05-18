@@ -31,7 +31,8 @@ public class SurfaceShower implements IObserver<RenderBean> {
     /**
      * 设置输出的Surface
      *
-     * @param surface {@link android.view.Surface}、{@link android.graphics.SurfaceTexture}或{@link android.view.TextureView}
+     * @param surface {@link android.view.Surface}、{@link android.graphics.SurfaceTexture}
+     *                或{@link android.view.TextureView}
      */
     public void setSurface(Object surface) {
         this.mSurface = surface;
@@ -40,7 +41,9 @@ public class SurfaceShower implements IObserver<RenderBean> {
     /**
      * 设置矩阵变换类型
      *
-     * @param type 变换类型，{@link MatrixUtils#TYPE_FITXY},{@link MatrixUtils#TYPE_FITSTART},{@link MatrixUtils#TYPE_CENTERCROP},{@link MatrixUtils#TYPE_CENTERINSIDE}或{@link MatrixUtils#TYPE_FITEND}
+     * @param type 变换类型，{@link MatrixUtils#TYPE_FITXY},{@link MatrixUtils#TYPE_FITSTART},
+     *             {@link MatrixUtils#TYPE_CENTERCROP},{@link MatrixUtils#TYPE_CENTERINSIDE}
+     *             或{@link MatrixUtils#TYPE_FITEND}
      */
     public void setMatrixType(int type) {
         this.mMatrixType = type;

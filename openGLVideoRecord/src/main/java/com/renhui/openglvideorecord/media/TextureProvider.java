@@ -5,6 +5,8 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.util.Log;
 
+import com.renhui.openglvideorecord.CamLog;
+
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
@@ -24,7 +26,7 @@ public class TextureProvider {
 
         @Override
         public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-            Log.d("TextureProvider", "onFrameAvailable");
+            CamLog.d("TextureProvider", "onFrameAvailable");
             mFrameSem.drainPermits();
             mFrameSem.release();
         }

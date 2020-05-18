@@ -60,7 +60,9 @@ public class MatrixUtils {
      * 根据预览的大小和图像的大小，计算合适的变换矩阵
      *
      * @param matrix     接收变换矩阵的数组
-     * @param type       变换的类型，参考{@link #TYPE_CENTERCROP}、{@link #TYPE_FITEND}、{@link #TYPE_CENTERINSIDE}、{@link #TYPE_FITSTART}、{@link #TYPE_FITXY}，对应{@link android.widget.ImageView}的{@link android.widget.ImageView#setScaleType(ImageView.ScaleType)}
+     * @param type       变换的类型，参考{@link #TYPE_CENTERCROP}、{@link #TYPE_FITEND}、
+     *                   {@link #TYPE_CENTERINSIDE}、{@link #TYPE_FITSTART}、{@link #TYPE_FITXY}，
+     *                   对应{@link android.widget.ImageView}的{@link android.widget.ImageView#setScaleType(ImageView.ScaleType)}
      * @param imgWidth   图像的宽度
      * @param imgHeight  图像的高度
      * @param viewWidth  视图的宽度
