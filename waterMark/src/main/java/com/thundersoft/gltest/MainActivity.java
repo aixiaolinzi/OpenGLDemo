@@ -66,20 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            glRender.setCameraHeight(640);
-            glRender.setCameraWidth(480);
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            glRender.setCameraHeight(1920);
-            glRender.setCameraWidth(1080);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
 
 }

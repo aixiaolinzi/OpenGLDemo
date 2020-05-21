@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGL10;
 
+/**
+ * EGLConfig 相关的属性
+ */
 public class EGLConfigAttrs {
 
     private int red = 8;

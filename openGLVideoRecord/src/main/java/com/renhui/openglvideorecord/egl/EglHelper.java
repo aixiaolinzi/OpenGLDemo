@@ -32,9 +32,11 @@ public class EglHelper {
     }
 
     public void changeDisplay(int key) {
+        //创建和初始化与本地EGL显示的连接
         mEGLDisplay = EGL14.eglGetDisplay(key);
         //获取版本号，[0]为版本号，[1]为子版本号
         int[] versions = new int[2];
+        //初始化EGL内部数据结构，返回EGL实现的主版本号和次版本号
         EGL14.eglInitialize(mEGLDisplay, versions, 0, versions, 1);
         log(EGL14.eglQueryString(mEGLDisplay, EGL14.EGL_VENDOR));
         log(EGL14.eglQueryString(mEGLDisplay, EGL14.EGL_VERSION));

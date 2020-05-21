@@ -15,7 +15,7 @@ import java.util.concurrent.Semaphore;
  */
 public class TextureProvider {
 
-    private final static int cameraId = 1;
+    private final static int cameraId = 0;
 
     private Camera mCamera;
 
@@ -45,9 +45,24 @@ public class TextureProvider {
             mFrameSem = new Semaphore(0);
             mCamera = Camera.open(cameraId);
             mCamera.setPreviewTexture(surface);
+
+
             surface.setOnFrameAvailableListener(frameListener);
             Camera.Size s = mCamera.getParameters().getPreviewSize();
             mCamera.startPreview();
+
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setFocusMode(Camera.Parameters.FLASH_MODE_AUTO); //对焦设置为自动
+            //其他参数配置略...
+            mCamera.setParameters(parameters);//添加参数
+
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+
+                }
+            });
+
             size.x = s.height;
             size.y = s.width;
             Log.i("TextureProvider", "Camera Opened");

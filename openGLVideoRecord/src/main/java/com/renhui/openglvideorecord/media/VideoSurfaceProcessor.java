@@ -138,6 +138,8 @@ public class VideoSurfaceProcessor extends BaseGLSL {
             GLES20.glViewport(0, 0, mSourceWidth, mSourceHeight);
             mRenderer.draw(mInputSurfaceTextureId);
             sourceFrame.unBindFrameBuffer();
+
+
             rb.textureId = sourceFrame.getCacheTextureId();
             //接收数据源传入的时间戳
             rb.timeStamp = mProvider.getTimeStamp();

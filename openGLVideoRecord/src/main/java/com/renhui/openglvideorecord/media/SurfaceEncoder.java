@@ -29,12 +29,13 @@ public class SurfaceEncoder extends SurfaceShower {
 
     private OnDrawEndListener mListener;
     private long startTime = -1;
+    private long index;
 
     public SurfaceEncoder() {
         super.setOnDrawEndListener(new OnDrawEndListener() {
             @Override
             public void onDrawEnd(EGLSurface surface, RenderBean bean) {
-                CamLog.d(TAG, "onDrawEnd start-->");
+                CamLog.e(TAG, "onDrawEnd start-->" + index++);
                 if (bean.timeStamp != -1) {
                     bean.egl.setPresentationTime(surface, bean.timeStamp * 1000);
                 } else {
@@ -118,6 +119,7 @@ public class SurfaceEncoder extends SurfaceShower {
             if (isEnd) {
                 mVideoEncoder.signalEndOfInputStream();
             }
+
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             while (true) {
                 int mOutputIndex = mVideoEncoder.dequeueOutputBuffer(info, TIME_OUT);

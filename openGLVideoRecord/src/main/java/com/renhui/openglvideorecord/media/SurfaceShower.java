@@ -3,6 +3,7 @@ package com.renhui.openglvideorecord.media;
 import android.opengl.EGLSurface;
 import android.opengl.GLES20;
 
+import com.renhui.openglvideorecord.CamLog;
 import com.renhui.openglvideorecord.base.BaseFilter;
 import com.renhui.openglvideorecord.core.IObserver;
 import com.renhui.openglvideorecord.core.RenderBean;
@@ -24,6 +25,7 @@ public class SurfaceShower implements IObserver<RenderBean> {
     private OnDrawEndListener mListener;
 
     public void setOutputSize(int width, int height) {
+        CamLog.e(" mWidth " + width);
         this.mWidth = width;
         this.mHeight = height;
     }
@@ -73,6 +75,7 @@ public class SurfaceShower implements IObserver<RenderBean> {
                 MatrixUtils.flip(mFilter.getVertexMatrix(), false, true);
             }
             rb.egl.makeCurrent(mShowSurface);
+
             GLES20.glViewport(0, 0, mWidth, mHeight);
             mFilter.draw(rb.textureId);
             if (mListener != null) {
