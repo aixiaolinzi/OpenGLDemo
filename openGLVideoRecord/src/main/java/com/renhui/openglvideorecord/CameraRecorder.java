@@ -33,7 +33,6 @@ public class CameraRecorder {
 
         //用于音频
         mSoundRecord = new SoundRecorder(mMuxer);
-
         mTextureProvider = new TextureProvider();
 
         //用于处理视频图像
