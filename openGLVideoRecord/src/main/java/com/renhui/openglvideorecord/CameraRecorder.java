@@ -1,5 +1,7 @@
 package com.renhui.openglvideorecord;
 
+import android.os.Environment;
+
 import com.renhui.openglvideorecord.core.Renderer;
 import com.renhui.openglvideorecord.media.SoundRecorder;
 import com.renhui.openglvideorecord.media.SurfaceEncoder;
@@ -8,38 +10,57 @@ import com.renhui.openglvideorecord.media.TextureProvider;
 import com.renhui.openglvideorecord.media.VideoSurfaceProcessor;
 import com.renhui.openglvideorecord.media.store.IHardStore;
 import com.renhui.openglvideorecord.media.store.StrengthenMp4MuxStore;
+import com.renhui.openglvideorecord.media2.SurfaceEncoder2;
 
 public class CameraRecorder {
 
     private VideoSurfaceProcessor mTextureProcessor;
     private TextureProvider mTextureProvider;
     private SurfaceShower mShower;
-    private SurfaceEncoder mSurfaceStore;
-    private IHardStore mMuxer;
+    private IHardStore mMuxer1;
+    private SurfaceEncoder mSurfaceStore1;
+    private SoundRecorder mSoundRecord1;
 
-    private SoundRecorder mSoundRecord;
+
+    private IHardStore mMuxer2;
+    private SurfaceEncoder2 mSurfaceStore2;
+    private SoundRecorder mSoundRecord2;
 
     public CameraRecorder() {
         //用于视频混流和存储
-        mMuxer = new StrengthenMp4MuxStore(true);
+        mMuxer1 = new StrengthenMp4MuxStore(true);
+
+        //用于编码图像
+        mSurfaceStore1 = new SurfaceEncoder();
+        mSurfaceStore1.setStore(mMuxer1);
+
+        //用于音频
+        mSoundRecord1 = new SoundRecorder(mMuxer1);
+
+
+        //用于视频混流和存储
+        mMuxer2 = new StrengthenMp4MuxStore(true);
+        //用于编码图像
+        mSurfaceStore2 = new SurfaceEncoder2();
+        mSurfaceStore2.setStore(mMuxer2);
+
+        //用于音频
+        mSoundRecord2 = new SoundRecorder(mMuxer2);
+
 
         //用于预览图像
         mShower = new SurfaceShower();
         mShower.setOutputSize(720, 1280);
-
-        //用于编码图像
-        mSurfaceStore = new SurfaceEncoder();
-        mSurfaceStore.setStore(mMuxer);
-
-        //用于音频
-        mSoundRecord = new SoundRecorder(mMuxer);
         mTextureProvider = new TextureProvider();
 
         //用于处理视频图像
         mTextureProcessor = new VideoSurfaceProcessor();
         mTextureProcessor.setTextureProvider(mTextureProvider);
         mTextureProcessor.addObserver(mShower);
-        mTextureProcessor.addObserver(mSurfaceStore);
+        mTextureProcessor.addObserver(mSurfaceStore1);
+        mTextureProcessor.addObserver(mSurfaceStore2);
+
+
     }
 
     public void setRenderer(Renderer renderer) {
@@ -62,7 +83,9 @@ public class CameraRecorder {
      * @param path 输出路径
      */
     public void setOutputPath(String path) {
-        mMuxer.setOutputPath(path);
+        mMuxer1.setOutputPath(path);
+        String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test1.mp4";
+        mMuxer2.setOutputPath(tempPath);
     }
 
     /**
@@ -108,17 +131,22 @@ public class CameraRecorder {
      * 开始录制
      */
     public void startRecord() {
-        mSurfaceStore.open();
-        mSoundRecord.start();
+        mSurfaceStore1.open();
+        mSoundRecord1.start();
+        mSurfaceStore2.open();
+        mSoundRecord2.start();
     }
 
     /**
      * 关闭录制
      */
     public void stopRecord() {
-        mSoundRecord.stop();
-        mSurfaceStore.close();
-        mMuxer.close();
+        mSoundRecord1.stop();
+        mSurfaceStore1.close();
+        mMuxer1.close();
+        mSoundRecord2.stop();
+        mSurfaceStore2.close();
+        mMuxer2.close();
     }
 
 }
