@@ -165,6 +165,7 @@ public class SurfaceEncoder2 extends SurfaceShower {
     @Override
     public void close() {
         super.close();
+        super.closeSurface();
         videoEncodeStep(true);
         startTime = -1;
     }

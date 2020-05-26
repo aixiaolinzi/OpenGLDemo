@@ -1,5 +1,6 @@
 package com.renhui.openglvideorecord;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.renhui.openglvideorecord.core.Renderer;
@@ -13,6 +14,7 @@ import com.renhui.openglvideorecord.media.store.StrengthenMp4MuxStore;
 import com.renhui.openglvideorecord.media2.SurfaceEncoder2;
 
 public class CameraRecorder {
+    private Context mContext;
 
     private VideoSurfaceProcessor mTextureProcessor;
     private TextureProvider mTextureProvider;
@@ -26,7 +28,8 @@ public class CameraRecorder {
     private SurfaceEncoder2 mSurfaceStore2;
     private SoundRecorder mSoundRecord2;
 
-    public CameraRecorder() {
+    public CameraRecorder(Context context) {
+        mContext = context;
         //用于视频混流和存储
         mMuxer1 = new StrengthenMp4MuxStore(true);
 
@@ -51,7 +54,7 @@ public class CameraRecorder {
         //用于预览图像
         mShower = new SurfaceShower();
         mShower.setOutputSize(720, 1280);
-        mTextureProvider = new TextureProvider();
+        mTextureProvider = new TextureProvider(mContext);
 
         //用于处理视频图像
         mTextureProcessor = new VideoSurfaceProcessor();
@@ -83,10 +86,31 @@ public class CameraRecorder {
      * @param path 输出路径
      */
     public void setOutputPath(String path) {
-        mMuxer1.setOutputPath(path);
-        String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test1.mp4";
-        mMuxer2.setOutputPath(tempPath);
+//        mMuxer1.setOutputPath(path);
+//        String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test1.mp4";
+//        mMuxer2.setOutputPath(tempPath);
     }
+
+
+    /**
+     * 设置录制的输出路径
+     *
+     * @param path 输出路径
+     */
+    public void setOutputPath1(String path) {
+        mMuxer1.setOutputPath(path);
+    }
+
+
+    /**
+     * 设置录制的输出路径
+     *
+     * @param path 输出路径
+     */
+    public void setOutputPath2(String path) {
+        mMuxer2.setOutputPath(path);
+    }
+
 
     /**
      * 设置预览大小
@@ -126,6 +150,43 @@ public class CameraRecorder {
     public void stopPreview() {
         mShower.close();
     }
+
+
+    /**
+     * 开始录制
+     */
+    public void startRecord1() {
+        mSurfaceStore1.open();
+        mSoundRecord1.start();
+    }
+
+    /**
+     * 关闭录制
+     */
+    public void stopRecord1() {
+        mSoundRecord1.stop();
+        mSurfaceStore1.close();
+        mMuxer1.close();
+    }
+
+
+    /**
+     * 开始录制
+     */
+    public void startRecord2() {
+        mSurfaceStore2.open();
+        mSoundRecord2.start();
+    }
+
+    /**
+     * 关闭录制
+     */
+    public void stopRecord2() {
+        mSoundRecord2.stop();
+        mSurfaceStore2.close();
+        mMuxer2.close();
+    }
+
 
     /**
      * 开始录制

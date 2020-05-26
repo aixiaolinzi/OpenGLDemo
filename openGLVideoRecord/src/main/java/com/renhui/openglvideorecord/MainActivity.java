@@ -29,6 +29,36 @@ public class MainActivity extends AppCompatActivity {
     private CameraRecorder mCamera;
 
     private String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.mp4";
+    private int index;
+
+
+    private Handler mHander = new Handler();
+    private Runnable stop1 = new Runnable() {
+        @Override
+        public void run() {
+            mCamera.stopRecord1();
+        }
+    };
+    private Runnable stop2 = new Runnable() {
+        @Override
+        public void run() {
+            mCamera.stopRecord2();
+        }
+    };
+
+
+    private Runnable startNext = new Runnable() {
+        @Override
+        public void run() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    StartVideo();
+                }
+            }).start();
+
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         mTvRecord = (TextView) findViewById(R.id.mTvRec);
         mTvPreview = (TextView) findViewById(R.id.mTvShow);
 
-        mCamera = new CameraRecorder();
-        mCamera.setOutputPath(tempPath);
+        mCamera = new CameraRecorder(this);
+//        mCamera.setOutputPath(tempPath);
 
         mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -73,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHander.removeCallbacks(null);
+    }
+
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mTvShow:
@@ -85,12 +121,27 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.mTvRec:
-                isRecordOpen = !isRecordOpen;
-                mTvRecord.setText(isRecordOpen ? "关录制" : "开录制");
-                if (isRecordOpen) {
-                    mCamera.startRecord();
-                } else {
-                    mCamera.stopRecord();
+                mTvRecord.setEnabled(false);
+                StartVideo();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void StartVideo() {
+        mHander.postDelayed(startNext, 30000);
+        isRecordOpen = !isRecordOpen;
+        mTvRecord.setText(isRecordOpen ? "使用2录制" : "使用1录制");
+        String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test" + index++ + ".mp4";
+        if (isRecordOpen) {
+            mCamera.setOutputPath1(tempPath);
+            mCamera.startRecord1();
+            mHander.postDelayed(stop2, 0);
+        } else {
+            mCamera.setOutputPath2(tempPath);
+            mCamera.startRecord2();
+            mHander.postDelayed(stop1, 0);
 //                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -103,10 +154,6 @@ public class MainActivity extends AppCompatActivity {
 //                            }
 //                        }
 //                    }, 1000);
-                }
-                break;
-            default:
-                break;
         }
     }
 }

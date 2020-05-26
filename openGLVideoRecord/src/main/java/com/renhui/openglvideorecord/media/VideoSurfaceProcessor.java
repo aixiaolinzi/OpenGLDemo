@@ -4,6 +4,8 @@ import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
 import android.opengl.GLES20;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.renhui.openglvideorecord.CamLog;
 import com.renhui.openglvideorecord.base.BaseGLSL;
@@ -32,6 +34,9 @@ public class VideoSurfaceProcessor extends BaseGLSL {
     private final Object LOCK = new Object();
 
     private TextureProvider mProvider;
+
+
+
 
     public VideoSurfaceProcessor() {
         observable = new Observable();

@@ -17,6 +17,7 @@ public class SurfaceShower implements IObserver<RenderBean> {
 
     private EGLSurface mShowSurface;
     private boolean isShow = false;
+    private boolean isDestroySurface = false;
     private BaseFilter mFilter;
     private Object mSurface;
     private int mWidth;
@@ -40,6 +41,7 @@ public class SurfaceShower implements IObserver<RenderBean> {
         this.mSurface = surface;
     }
 
+
     /**
      * 设置矩阵变换类型
      *
@@ -53,14 +55,25 @@ public class SurfaceShower implements IObserver<RenderBean> {
 
     public void open() {
         isShow = true;
+        isDestroySurface = false;
     }
 
     public void close() {
         isShow = false;
     }
 
+
+    public void closeSurface() {
+        isDestroySurface = true;
+    }
+
     @Override
     public void onCall(RenderBean rb) {
+        if (isDestroySurface && mShowSurface != null) {
+            rb.egl.destroySurface(mShowSurface);
+            mShowSurface = null;
+        }
+
         if (rb.endFlag && mShowSurface != null) {
             rb.egl.destroySurface(mShowSurface);
             mShowSurface = null;

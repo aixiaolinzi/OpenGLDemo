@@ -123,7 +123,7 @@ public class SurfaceEncoder extends SurfaceShower {
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             while (true) {
                 int mOutputIndex = mVideoEncoder.dequeueOutputBuffer(info, TIME_OUT);
-                CamLog.i(TAG, "videoEncodeStep:mOutputIndex=" + mOutputIndex);
+                CamLog.i(TAG, "VideoSurfaceProcessor:mOutputIndex=" + mOutputIndex);
                 if (mOutputIndex >= 0) {
                     if ((info.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
                         info.size = 0;
@@ -162,6 +162,7 @@ public class SurfaceEncoder extends SurfaceShower {
     @Override
     public void close() {
         super.close();
+        super.closeSurface();
         videoEncodeStep(true);
         startTime = -1;
     }
