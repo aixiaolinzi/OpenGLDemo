@@ -3,6 +3,8 @@ package com.thundersoft.dameserverdemo;
 import android.graphics.ImageFormat;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Surface;
 
@@ -19,11 +21,20 @@ public class DataFeeder {
     private ImageReader mImageReader;
 
     private List<OnFrameAvailableListener> mListenerList;
+
+
+    /**
+     * A {@link Handler} for running tasks in the background.
+     */
+    private Handler mBackgroundHandler;
     
     public DataFeeder() {
+        Looper.prepare();
+        Looper mainLooper = Looper.getMainLooper();
+        mBackgroundHandler=new Handler(mainLooper);
         this.mListenerList = new ArrayList<>();
         mImageReader = ImageReader.newInstance(1280, 720, ImageFormat.YUV_420_888, 2);
-        mImageReader.setOnImageAvailableListener(new ImageAvailableListener(), null);
+        mImageReader.setOnImageAvailableListener(new ImageAvailableListener(), mBackgroundHandler);
     }
     
     public Surface getSurface(){

@@ -61,4 +61,9 @@ public class MainActivity extends AppCompatActivity {
         mCamera.stopPreview();
         mCamera.close();
     }
+
+    public void closePreview(View view) {
+        mCamera.stopPreview();
+        mCamera.close();
+    }
 }

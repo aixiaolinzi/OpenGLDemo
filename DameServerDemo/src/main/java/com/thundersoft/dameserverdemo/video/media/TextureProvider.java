@@ -23,6 +23,7 @@ import android.view.Surface;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.thundersoft.dameserverdemo.CameraController;
 import com.thundersoft.dameserverdemo.video.CamLog;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class TextureProvider {
 
 
     private Semaphore mFrameSem;
+
+    private CameraController mCameraController;
 
 
     /**
@@ -104,14 +107,20 @@ public class TextureProvider {
         final Point size = new Point();
 
         mFrameSem = new Semaphore(0);
-        setupCamera(1080, 1920);
-        openCamera();
+
+        Surface surface1 = new Surface(mSurfaceTexture);
+
+        mCameraController = CameraController.getInstance(mContext);
+        mCameraController.initCamera(surface1);
+        mCameraController.openCamera();
+
+//        setupCamera(1080, 1920);
+//        openCamera();
 
         surface.setOnFrameAvailableListener(frameListener);
 
-
-        size.x = mPreviewSize.getHeight();
-        size.y = mPreviewSize.getWidth();
+        size.x = 1920;
+        size.y = 1080;
         Log.i("TextureProvider", "Camera Opened");
 
         return size;

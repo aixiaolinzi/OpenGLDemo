@@ -21,6 +21,7 @@ import android.view.Surface;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -37,7 +38,7 @@ public class CameraController {
     private static boolean isPreviewStarted = false;
     private static CameraController sCameraController;
     private Context mContext;
-    private DataFeeder mDataFeeder = new DataFeeder();
+//    private DataFeeder mDataFeeder = new DataFeeder();
 
     private String mCameraId;
     private Surface mSurface;
@@ -88,7 +89,7 @@ public class CameraController {
     }
 
     public void setDataFeeder(DataFeeder dataFeeder) {
-        this.mDataFeeder = dataFeeder;
+//        this.mDataFeeder = dataFeeder;
 
     }
 
@@ -215,15 +216,16 @@ public class CameraController {
 
         try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mCaptureRequestBuilder.addTarget(mDataFeeder.getSurface());
+//            mCaptureRequestBuilder.addTarget(mDataFeeder.getSurface());
             if (null != mGLSurface) {
                 mCaptureRequestBuilder.addTarget(mGLSurface);
             }
-            mSurfaceList.add(mDataFeeder.getSurface());
+            mCaptureRequestBuilder.addTarget(mSurface);
+//            mSurfaceList.add(mDataFeeder.getSurface());
             if (null != mSurface) {
                 mSurfaceList.add(mSurface);
             }
-            mCameraDevice.createCaptureSession(mSurfaceList,
+            mCameraDevice.createCaptureSession(Arrays.asList(mSurface),
                     new CameraCaptureSession.StateCallback() {
                         @Override
                         public void onConfigured(CameraCaptureSession session) {
@@ -263,7 +265,7 @@ public class CameraController {
                 }
                 mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
                 mCaptureRequestBuilder.addTarget(mSurface);
-                mCaptureRequestBuilder.addTarget(mDataFeeder.getSurface());
+//                mCaptureRequestBuilder.addTarget(mDataFeeder.getSurface());
                 mCaptureRequest = mCaptureRequestBuilder.build();
                 mCameraCaptureSession.setRepeatingRequest(mCaptureRequest, null, mCameraHandler);
             } catch (CameraAccessException e) {
@@ -288,7 +290,7 @@ public class CameraController {
                     return -1;
                 }
                 mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                mCaptureRequestBuilder.addTarget(mDataFeeder.getSurface());
+//                mCaptureRequestBuilder.addTarget(mDataFeeder.getSurface());
                 mCaptureRequest = mCaptureRequestBuilder.build();
                 mCameraCaptureSession.setRepeatingRequest(mCaptureRequest, null, mCameraHandler);
             } catch (CameraAccessException e) {
