@@ -1,36 +1,14 @@
 package com.thundersoft.dameserverdemo.video.media;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.CaptureResult;
-import android.hardware.camera2.TotalCaptureResult;
-import android.hardware.camera2.params.MeteringRectangle;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.os.Handler;
 import android.util.Log;
-import android.util.Size;
 import android.view.Surface;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 
 import com.thundersoft.dameserverdemo.CameraController;
 import com.thundersoft.dameserverdemo.video.CamLog;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.Semaphore;
 
 /**
