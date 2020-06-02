@@ -33,7 +33,7 @@ public class OesFilter extends BaseFilter {
 
 
     public OesFilter() {
-        super(null, vertexCode, fragmentCode);
+        super(vertexCode, fragmentCode);
     }
 
     @Override

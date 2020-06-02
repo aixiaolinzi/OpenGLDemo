@@ -1,6 +1,5 @@
 package com.thundersoft.dameserverdemo.video.base;
 
-import android.content.res.Resources;
 import android.opengl.GLES20;
 
 
@@ -32,7 +31,6 @@ public class BaseFilter extends BaseGLSL implements Renderer {
     protected int mWidth;
     protected int mHeight;
 
-    protected Resources mRes;
     private String mVertex;
     private String mFragment;
 
@@ -50,8 +48,7 @@ public class BaseFilter extends BaseGLSL implements Renderer {
     private FrameBuffer mFrameTemp;
     private final LinkedList<Runnable> mTasks = new LinkedList<>();
 
-    protected BaseFilter(Resources resource, String vertex, String fragment) {
-        this.mRes = resource;
+    protected BaseFilter(String vertex, String fragment) {
         this.mVertex = vertex;
         this.mFragment = fragment;
         mFrameTemp = new FrameBuffer();

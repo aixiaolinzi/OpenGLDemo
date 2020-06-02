@@ -31,7 +31,7 @@ public class LazyFilter extends BaseFilter {
 
 
     public LazyFilter() {
-        super(null, vertexCode, fragmentCode);
+        super(vertexCode, fragmentCode);
     }
 
     @Override
