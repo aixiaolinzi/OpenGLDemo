@@ -14,6 +14,5 @@ public class RenderBean {
     public long timeStamp;
     public long textureTime;
 
-    public long threadId;
 
 }

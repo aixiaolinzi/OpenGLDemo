@@ -15,10 +15,6 @@ public class GroupFilter extends LazyFilter {
 
     private ArrayList<BaseFilter> mGroup;
 
-    public GroupFilter(Resources resource) {
-        super();
-    }
-
     public GroupFilter() {
         super();
     }

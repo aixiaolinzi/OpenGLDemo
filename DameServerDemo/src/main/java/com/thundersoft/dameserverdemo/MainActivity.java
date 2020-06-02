@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mCamera = new CameraRecorder(this);
         mCamera.setOutputPath(tempPath);
 
-        GroupFilter filter = new GroupFilter(getResources());
+        GroupFilter filter = new GroupFilter();
         mCamera.setRenderer(filter);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.image);
         filter.addFilter(new WaterMarkFilter().
