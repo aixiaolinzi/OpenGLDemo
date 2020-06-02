@@ -58,12 +58,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         CamLog.d("SurfaceView+  surfaceDestroyed surfaceDestroyed ");
-        mCamera.stopPreview();
         mCamera.close();
     }
 
     public void closePreview(View view) {
-        mCamera.stopPreview();
         mCamera.close();
     }
 }

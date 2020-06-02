@@ -137,7 +137,7 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         while (!mProvider.frame() && mGLThreadFlag) {
             mInputSurfaceTexture.updateTexImage();
             mInputSurfaceTexture.getTransformMatrix(mRenderer.getTextureMatrix());
-//            CamLog.d(TAG, "timestamp:" + mInputSurfaceTexture.getTimestamp());
+            CamLog.d(TAG, "timestamp:" + mInputSurfaceTexture.getTimestamp());
             sourceFrame.bindFrameBuffer(mSourceWidth, mSourceHeight);
             GLES20.glViewport(0, 0, mSourceWidth, mSourceHeight);
             mRenderer.draw(mInputSurfaceTextureId);

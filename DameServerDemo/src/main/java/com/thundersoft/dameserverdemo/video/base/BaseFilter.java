@@ -64,6 +64,7 @@ public class BaseFilter extends BaseGLSL implements Renderer {
         mVertexBuffer = vertex.asFloatBuffer();
         mVertexBuffer.put(MatrixUtils.getOriginalVertexCo());
         mVertexBuffer.position(0);
+
         ByteBuffer texture = ByteBuffer.allocateDirect(32);
         texture.order(ByteOrder.nativeOrder());
         mTextureBuffer = texture.asFloatBuffer();
