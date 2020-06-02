@@ -54,6 +54,9 @@ public class TextureProvider {
 
         mFrameSem = new Semaphore(0);
 
+
+        mSurfaceTexture.setDefaultBufferSize(2048, 1536);
+
         Surface surface1 = new Surface(mSurfaceTexture);
 
         mCameraController = CameraController.getInstance(mContext);
@@ -62,8 +65,8 @@ public class TextureProvider {
 
         surface.setOnFrameAvailableListener(frameListener);
 
-        size.x = 720;
-        size.y = 1920;
+        size.x = 1536;
+        size.y = 2048;
         Log.i("TextureProvider", "Camera Opened");
 
         return size;

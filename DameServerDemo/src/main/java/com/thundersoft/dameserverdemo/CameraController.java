@@ -225,6 +225,8 @@ public class CameraController {
             if (null != mSurface) {
                 mSurfaceList.add(mSurface);
             }
+
+
             mCameraDevice.createCaptureSession(Arrays.asList(mSurface),
                     new CameraCaptureSession.StateCallback() {
                         @Override
