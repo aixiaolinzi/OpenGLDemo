@@ -57,11 +57,7 @@ public class TextureProvider {
 
         mSurfaceTexture.setDefaultBufferSize(2048, 1536);
 
-        Surface surface1 = new Surface(mSurfaceTexture);
 
-        mCameraController = CameraController.getInstance(mContext);
-        mCameraController.initCamera(surface1);
-        mCameraController.openCamera();
 
         surface.setOnFrameAvailableListener(frameListener);
 
@@ -72,6 +68,15 @@ public class TextureProvider {
         return size;
     }
 
+
+    public void start(){
+
+        Surface surface1 = new Surface(mSurfaceTexture);
+
+        mCameraController = CameraController.getInstance(mContext);
+        mCameraController.initCamera(surface1);
+        mCameraController.openCamera();
+    }
 
 
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import com.thundersoft.dameserverdemo.video.core.Renderer;
 import com.thundersoft.dameserverdemo.video.media.SoundRecorder;
 import com.thundersoft.dameserverdemo.video.media.SurfaceEncoder;
-import com.thundersoft.dameserverdemo.video.media.SurfaceShower;
 import com.thundersoft.dameserverdemo.video.media.TextureProvider;
 import com.thundersoft.dameserverdemo.video.media.VideoSurfaceProcessor;
 import com.thundersoft.dameserverdemo.video.media.store.IHardStore;
@@ -67,6 +66,16 @@ public class CameraRecorder {
      */
     public void open() {
         mTextureProcessor.start();
+    }
+
+
+
+
+    /**
+     * 打开数据源
+     */
+    public void start() {
+        mTextureProcessor.startVi();
     }
 
     /**

@@ -41,9 +41,6 @@ public class BaseFilter extends BaseGLSL implements Renderer {
     protected int mGLTextureMatrix;
     protected int mGLTexture;
 
-    private int mGLWidth;
-    private int mGLHeight;
-    private boolean isUseSize = false;
 
     private FrameBuffer mFrameTemp;
     private final LinkedList<Runnable> mTasks = new LinkedList<>();
@@ -81,22 +78,6 @@ public class BaseFilter extends BaseGLSL implements Renderer {
         mTextureBuffer.position(0);
     }
 
-    public void setVertexBuffer(FloatBuffer vertexBuffer) {
-        this.mVertexBuffer = vertexBuffer;
-    }
-
-    public void setTextureBuffer(FloatBuffer textureBuffer) {
-        this.mTextureBuffer = textureBuffer;
-    }
-
-    public void setVertexMatrix(float[] matrix) {
-        this.mVertexMatrix = matrix;
-    }
-
-    public void setTextureMatrix(float[] matrix) {
-        this.mTextureMatrix = matrix;
-    }
-
     public float[] getVertexMatrix() {
         return mVertexMatrix;
     }
@@ -105,9 +86,6 @@ public class BaseFilter extends BaseGLSL implements Renderer {
         return mTextureMatrix;
     }
 
-    protected void shaderNeedTextureSize(boolean need) {
-        this.isUseSize = need;
-    }
 
     protected void onCreate() {
         mGLProgram = createOpenGLProgram(mVertex, mFragment);
@@ -117,15 +95,10 @@ public class BaseFilter extends BaseGLSL implements Renderer {
         mGLTextureMatrix = GLES20.glGetUniformLocation(mGLProgram, "uTextureMatrix");
         mGLTexture = GLES20.glGetUniformLocation(mGLProgram, "uTexture");
 
-        if (isUseSize) {
-            mGLWidth = GLES20.glGetUniformLocation(mGLProgram, "uWidth");
-            mGLHeight = GLES20.glGetUniformLocation(mGLProgram, "uHeight");
-        }
-    }
-
-    protected void onSizeChanged(int width, int height) {
 
     }
+
+
 
     @Override
     public final void create() {
@@ -138,7 +111,6 @@ public class BaseFilter extends BaseGLSL implements Renderer {
     public void sizeChanged(int width, int height) {
         this.mWidth = width;
         this.mHeight = height;
-        onSizeChanged(width, height);
         mFrameTemp.destroyFrameBuffer();
     }
 
@@ -206,10 +178,6 @@ public class BaseFilter extends BaseGLSL implements Renderer {
     protected void onSetExpandData() {
         GLES20.glUniformMatrix4fv(mGLVertexMatrix, 1, false, mVertexMatrix, 0);
         GLES20.glUniformMatrix4fv(mGLTextureMatrix, 1, false, mTextureMatrix, 0);
-        if (isUseSize) {
-            GLES20.glUniform1f(mGLWidth, mWidth);
-            GLES20.glUniform1f(mGLHeight, mHeight);
-        }
     }
 
     /**

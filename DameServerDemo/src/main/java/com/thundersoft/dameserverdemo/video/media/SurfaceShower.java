@@ -84,8 +84,8 @@ public class SurfaceShower implements IObserver<RenderBean> {
                 mFilter = new LazyFilter();
                 mFilter.create();
                 mFilter.sizeChanged(rb.sourceWidth, rb.sourceHeight);
-                MatrixUtils.getMatrix(mFilter.getVertexMatrix(), mMatrixType, rb.sourceWidth, rb.sourceHeight,
-                        mWidth, mHeight);
+                MatrixUtils.getMatrix(mFilter.getVertexMatrix(), mMatrixType,
+                        rb.sourceWidth, rb.sourceHeight, mWidth, mHeight);
                 MatrixUtils.flip(mFilter.getVertexMatrix(), false, true);
             }
             rb.egl.makeCurrent(mShowSurface);

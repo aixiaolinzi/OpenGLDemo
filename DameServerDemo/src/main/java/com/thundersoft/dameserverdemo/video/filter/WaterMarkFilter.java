@@ -37,7 +37,7 @@ public class WaterMarkFilter extends LazyFilter {
             public void run() {
                 if (bmp != null) {
                     if (markTextureId == -1) {
-                        markTextureId = createTextureID(false);
+                        markTextureId = createBitmapTextureID();
                     } else {
                         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, markTextureId);
                     }

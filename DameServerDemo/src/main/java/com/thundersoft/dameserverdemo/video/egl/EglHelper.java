@@ -128,9 +128,6 @@ public class EglHelper {
         return makeCurrent(surface, mEGLContext);
     }
 
-    public boolean makeCurrent() {
-        return makeCurrent(mEGLSurface, mEGLContext);
-    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setPresentationTime(EGLSurface surface, long time) {

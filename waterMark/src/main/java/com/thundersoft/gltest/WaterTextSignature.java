@@ -79,7 +79,7 @@ public class WaterTextSignature {
         Matrix.setIdentityM(mViewMatrix, 0);
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.setIdentityM(mMVPMatrix, 0);
-        hProgram = creatProgram(VERTEX_SHADER, FRAGMENT_SHADER);
+        hProgram = createProgram(VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
     private FloatBuffer createFloatBuffer(float[] coords) {
@@ -157,7 +157,7 @@ public class WaterTextSignature {
      * @param fragmentSource
      * @return
      */
-    private int creatProgram(String vertexSource, String fragmentSource) {
+    private int createProgram(String vertexSource, String fragmentSource) {
 
         int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexSource);
         if (vertexShader == 0) return 0;

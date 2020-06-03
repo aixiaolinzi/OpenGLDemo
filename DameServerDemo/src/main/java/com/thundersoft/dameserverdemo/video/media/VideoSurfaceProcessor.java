@@ -68,6 +68,11 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         }
     }
 
+
+    public void startVi(){
+        mProvider.start();
+    }
+
     public void stop() {
         synchronized (LOCK) {
             if (mGLThreadFlag) {

@@ -14,6 +14,7 @@ import com.thundersoft.dameserverdemo.video.CamLog;
 import com.thundersoft.dameserverdemo.video.CameraRecorder;
 import com.thundersoft.dameserverdemo.video.filter.GroupFilter;
 import com.thundersoft.dameserverdemo.video.filter.WaterMarkFilter;
+import com.thundersoft.dameserverdemo.video.filter.WaterMarkTextFilter;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "crbtest";
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.image);
         filter.addFilter(new WaterMarkFilter().
                 setMarkPosition(125, 600, 227 * 2, 39 * 2).setMark(bitmap));
+
+        filter.addFilter(new WaterMarkTextFilter().setMarkPosition(500,500,400,120));
         mCamera.open();
 
 
@@ -50,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //mCameraController.startBackgroudCamera();
     }
 
-    public void openPreview(View view) {
-        mCamera.startRecord1();
-    }
+
 
     @Override
     protected void onDestroy() {
@@ -61,7 +62,18 @@ public class MainActivity extends AppCompatActivity {
         mCamera.close();
     }
 
+
+    public void openCamera(View view) {
+        mCamera.start();
+    }
+
+    public void openPreview(View view) {
+        mCamera.startRecord1();
+    }
+
     public void closePreview(View view) {
         mCamera.close();
     }
+
+
 }
