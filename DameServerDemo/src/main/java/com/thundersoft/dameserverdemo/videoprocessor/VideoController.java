@@ -23,6 +23,8 @@ public class VideoController {
 
 
     public int startVideoRecord() {
+
+
         return 0;
     }
 
