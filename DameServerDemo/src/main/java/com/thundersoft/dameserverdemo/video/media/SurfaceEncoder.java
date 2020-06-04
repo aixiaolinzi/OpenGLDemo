@@ -28,7 +28,6 @@ public class SurfaceEncoder extends SurfaceShower {
     private IHardStore mStore;
     private int mVideoTrack = -1;
 
-    private OnDrawEndListener mListener;
     private long startTime = -1;
     private long index;
 
@@ -47,9 +46,6 @@ public class SurfaceEncoder extends SurfaceShower {
                 }
                 videoEncodeStep(false);
                 CamLog.e(TAG, "onDrawEnd end-->");
-                if (mListener != null) {
-                    mListener.onDrawEnd(surface, bean);
-                }
             }
         });
     }
@@ -168,10 +164,6 @@ public class SurfaceEncoder extends SurfaceShower {
         startTime = -1;
     }
 
-    @Override
-    public void setOnDrawEndListener(OnDrawEndListener listener) {
-        this.mListener = listener;
-    }
 
     @Override
     public void setSurface(Object surface) {

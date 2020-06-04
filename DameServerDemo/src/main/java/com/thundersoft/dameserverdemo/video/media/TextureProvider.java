@@ -1,12 +1,7 @@
 package com.thundersoft.dameserverdemo.video.media;
 
-import android.content.Context;
-import android.graphics.Point;
 import android.graphics.SurfaceTexture;
-import android.util.Log;
-import android.view.Surface;
 
-import com.thundersoft.dameserverdemo.CameraController;
 import com.thundersoft.dameserverdemo.video.CamLog;
 
 import java.util.concurrent.Semaphore;
@@ -15,19 +10,10 @@ import java.util.concurrent.Semaphore;
  * 纹理提供者---其实就是相机控制逻辑
  */
 public class TextureProvider {
-
-    private Context mContext;
-
     private Semaphore mFrameSem;
 
-    private CameraController mCameraController;
+    public TextureProvider() {
 
-    private SurfaceTexture mSurfaceTexture;
-
-
-
-    public TextureProvider(Context mContext) {
-        this.mContext = mContext;
     }
 
     // 视频帧监听器
@@ -48,34 +34,9 @@ public class TextureProvider {
      * @param surface 数据流输出到此
      * @return 视频流的宽高
      */
-    public Point open(final SurfaceTexture surface) {
-        this.mSurfaceTexture = surface;
-        final Point size = new Point();
-
+    public void setOnFrameAvailableListener(final SurfaceTexture surface) {
         mFrameSem = new Semaphore(0);
-
-
-        mSurfaceTexture.setDefaultBufferSize(2048, 1536);
-
-
-
         surface.setOnFrameAvailableListener(frameListener);
-
-        size.x = 1536;
-        size.y = 2048;
-        Log.i("TextureProvider", "Camera Opened");
-
-        return size;
-    }
-
-
-    public void start(){
-
-        Surface surface1 = new Surface(mSurfaceTexture);
-
-        mCameraController = CameraController.getInstance(mContext);
-        mCameraController.initCamera(surface1);
-        mCameraController.openCamera();
     }
 
 

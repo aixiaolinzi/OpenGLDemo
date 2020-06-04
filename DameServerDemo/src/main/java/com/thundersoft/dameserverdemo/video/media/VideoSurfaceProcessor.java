@@ -1,11 +1,15 @@
 package com.thundersoft.dameserverdemo.video.media;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
 import android.opengl.GLES20;
+import android.util.Size;
+import android.view.Surface;
 
 
+import com.thundersoft.dameserverdemo.CameraController;
 import com.thundersoft.dameserverdemo.video.CamLog;
 import com.thundersoft.dameserverdemo.video.base.BaseGLSL;
 import com.thundersoft.dameserverdemo.video.core.FrameBuffer;
@@ -24,6 +28,7 @@ import com.thundersoft.dameserverdemo.video.egl.EglHelper;
  */
 public class VideoSurfaceProcessor extends BaseGLSL {
 
+    private final Context mContext;
     private String TAG = getClass().getSimpleName();
 
     private boolean mGLThreadFlag = false;
@@ -32,26 +37,64 @@ public class VideoSurfaceProcessor extends BaseGLSL {
     private Observable<RenderBean> observable;
     private final Object LOCK = new Object();
 
-    private TextureProvider mProvider;
+    private TextureProvider mTextureProvider;
 
 
+    private SurfaceTexture mInputSurfaceTexture;
+    private Surface videoSurface;
+    private int mInputSurfaceTextureId;
+    /**
+     * The {@link android.util.Size} of camera preview.
+     */
+    private Size mPreviewSize;
+    private CameraController mCameraController;
 
-
-    public VideoSurfaceProcessor() {
+    public VideoSurfaceProcessor(Context context) {
+        this.mContext=context;
         observable = new Observable();
+        mTextureProvider = new TextureProvider();
+
+        mInputSurfaceTextureId = createTextureID();
+        mPreviewSize=new Size(2048,1536);
+        mInputSurfaceTexture = new SurfaceTexture(mInputSurfaceTextureId);
+        mInputSurfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+        videoSurface = new Surface(mInputSurfaceTexture);
     }
 
-    public void setTextureProvider(TextureProvider provider) {
-        this.mProvider = provider;
+
+    public void setRenderer(Renderer renderer) {
+        mRenderer = new WrapRenderer(renderer);
     }
+
+
+    public void stop() {
+        synchronized (LOCK) {
+            if (mGLThreadFlag) {
+                mGLThreadFlag = false;
+                mTextureProvider.close();
+                try {
+                    LOCK.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     public void start() {
         synchronized (LOCK) {
             if (!mGLThreadFlag) {
-                if (mProvider == null) {
+                if (mTextureProvider == null) {
                     return;
                 }
                 mGLThreadFlag = true;
+
+                mCameraController = CameraController.getInstance(mContext);
+                mCameraController.initCamera(videoSurface);
+                mCameraController.openCamera();
+
+
                 mGLThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -69,42 +112,24 @@ public class VideoSurfaceProcessor extends BaseGLSL {
     }
 
 
-    public void startVi(){
-        mProvider.start();
-    }
-
-    public void stop() {
-        synchronized (LOCK) {
-            if (mGLThreadFlag) {
-                mGLThreadFlag = false;
-                mProvider.close();
-                try {
-                    LOCK.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void setRenderer(Renderer renderer) {
-        mRenderer = new WrapRenderer(renderer);
-    }
-
     private void glRun() {
         EglHelper egl = new EglHelper();
         boolean ret = egl.createGLESWithSurface(new EGLConfigAttrs(), new EGLContextAttrs(), new SurfaceTexture(1));
         if (!ret) {
-            //todo 错误处理
+            //todo error handling
             return;
         }
-        int mInputSurfaceTextureId = createTextureID();
-        SurfaceTexture mInputSurfaceTexture = new SurfaceTexture(mInputSurfaceTextureId);
 
-        Point size = mProvider.open(mInputSurfaceTexture);
+
+
+
+        final Point size = new Point();
+        size.x = mPreviewSize.getHeight();
+        size.y = mPreviewSize.getWidth();
+        mTextureProvider.setOnFrameAvailableListener(mInputSurfaceTexture);
         CamLog.d(TAG, "Provider Opened . data size (x,y)=" + size.x + "/" + size.y);
         if (size.x <= 0 || size.y <= 0) {
-            //todo 错误处理
+            //todo error handling
             destroyGL(egl);
             synchronized (LOCK) {
                 LOCK.notifyAll();
@@ -128,7 +153,7 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         FrameBuffer sourceFrame = new FrameBuffer();
         mRenderer.create();
         mRenderer.sizeChanged(mSourceWidth, mSourceHeight);
-        mRenderer.setFlag(mProvider.isLandscape() ? WrapRenderer.TYPE_CAMERA : WrapRenderer.TYPE_MOVE);
+        mRenderer.setFlag(mTextureProvider.isLandscape() ? WrapRenderer.TYPE_CAMERA : WrapRenderer.TYPE_MOVE);
 
         //用于其他的回调
         RenderBean rb = new RenderBean();
@@ -138,7 +163,7 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         rb.endFlag = false;
         CamLog.d(TAG, "Processor While Loop Entry");
         //要求数据源必须同步填充SurfaceTexture，填充完成前等待，1秒是有30帧的输出。
-        while (!mProvider.frame() && mGLThreadFlag) {
+        while (!mTextureProvider.frame() && mGLThreadFlag) {
             mInputSurfaceTexture.updateTexImage();
             mInputSurfaceTexture.getTransformMatrix(mRenderer.getTextureMatrix());
             CamLog.d(TAG, "timestamp:" + mInputSurfaceTexture.getTimestamp());
@@ -150,7 +175,7 @@ public class VideoSurfaceProcessor extends BaseGLSL {
 
             rb.textureId = sourceFrame.getCacheTextureId();
             //接收数据源传入的时间戳
-            rb.timeStamp = mProvider.getTimeStamp();
+            rb.timeStamp = mTextureProvider.getTimeStamp();
             rb.textureTime = mInputSurfaceTexture.getTimestamp();
             observable.notify(rb);
         }
@@ -178,5 +203,9 @@ public class VideoSurfaceProcessor extends BaseGLSL {
 
     protected void error(int id, String msg) {
 
+    }
+
+    public Surface getVideoSurface() {
+        return videoSurface;
     }
 }

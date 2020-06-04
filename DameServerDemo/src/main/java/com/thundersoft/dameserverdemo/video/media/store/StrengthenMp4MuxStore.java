@@ -2,6 +2,7 @@ package com.thundersoft.dameserverdemo.video.media.store;
 
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class StrengthenMp4MuxStore implements IHardStore {
     private final String tag = getClass().getSimpleName();
     private MediaMuxer mMuxer;
     private final boolean av;
-    private String path;
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test123.mp4";
     private int audioTrack = -1;
     private int videoTrack = -1;
     private final Object Lock = new Object();

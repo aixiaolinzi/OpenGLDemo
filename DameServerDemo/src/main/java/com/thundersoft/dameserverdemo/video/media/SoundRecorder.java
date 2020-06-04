@@ -15,7 +15,6 @@ import com.thundersoft.dameserverdemo.video.media.store.IHardStore;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.concurrent.Executors;
 
 /**
  * 声音录制器
@@ -35,14 +34,11 @@ public class SoundRecorder {
     private int mAudioTrack = -1;
     private long startTime = 0;
     private boolean stopFlag = false;
-    private Executors mExec;
 
     public SoundRecorder(IHardStore store) {
         this.mStore = store;
     }
 
-    public void configure() {
-    }
 
     public void start() {
         if (!isStarted) {
