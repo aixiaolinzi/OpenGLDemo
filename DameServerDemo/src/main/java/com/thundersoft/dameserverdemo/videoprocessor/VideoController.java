@@ -20,15 +20,11 @@ public class VideoController {
     }
 
     private VideoController() {
-
+        mCameraRecorder = new CameraRecorder();
     }
 
     public static final VideoController getInstance() {
         return VideoControllerHolder.INSTANCE;
-    }
-
-    public void init(Context context){
-        mCameraRecorder = new CameraRecorder(context);
     }
 
 

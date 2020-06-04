@@ -20,10 +20,6 @@ public class CameraRecorder {
 
 
     public CameraRecorder() {
-
-    }
-
-    public CameraRecorder(Context context) {
         //用于视频混流和存储
         mMuxer1 = new StrengthenMp4MuxStore(true);
 
@@ -35,7 +31,7 @@ public class CameraRecorder {
         mSoundRecord1 = new SoundRecorder(mMuxer1);
 
         //用于处理视频图像
-        mTextureProcessor = new VideoSurfaceProcessor(context);
+        mTextureProcessor = new VideoSurfaceProcessor();
         mTextureProcessor.addObserver(mSurfaceStore1);
     }
 

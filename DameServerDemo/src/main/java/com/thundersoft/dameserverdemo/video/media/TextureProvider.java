@@ -47,7 +47,6 @@ public class TextureProvider {
     public void close() {
         mFrameSem.drainPermits();
         mFrameSem.release();
-
     }
 
     /**

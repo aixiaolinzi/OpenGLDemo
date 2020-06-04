@@ -27,8 +27,6 @@ import com.thundersoft.dameserverdemo.video.egl.EglHelper;
  * 来接收处理完毕的{@link RenderBean}，并做相应处理，诸如展示、编码等。
  */
 public class VideoSurfaceProcessor extends BaseGLSL {
-
-    private final Context mContext;
     private String TAG = getClass().getSimpleName();
 
     private boolean mGLThreadFlag = false;
@@ -39,7 +37,6 @@ public class VideoSurfaceProcessor extends BaseGLSL {
 
     private TextureProvider mTextureProvider;
 
-
     private SurfaceTexture mInputSurfaceTexture;
     private Surface videoSurface;
     private int mInputSurfaceTextureId;
@@ -47,10 +44,8 @@ public class VideoSurfaceProcessor extends BaseGLSL {
      * The {@link android.util.Size} of camera preview.
      */
     private Size mPreviewSize;
-    private CameraController mCameraController;
 
-    public VideoSurfaceProcessor(Context context) {
-        this.mContext=context;
+    public VideoSurfaceProcessor() {
         observable = new Observable();
         mTextureProvider = new TextureProvider();
 
@@ -59,6 +54,8 @@ public class VideoSurfaceProcessor extends BaseGLSL {
         mInputSurfaceTexture = new SurfaceTexture(mInputSurfaceTextureId);
         mInputSurfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         videoSurface = new Surface(mInputSurfaceTexture);
+
+        mTextureProvider.setOnFrameAvailableListener(mInputSurfaceTexture);
     }
 
 
@@ -89,12 +86,6 @@ public class VideoSurfaceProcessor extends BaseGLSL {
                     return;
                 }
                 mGLThreadFlag = true;
-
-                mCameraController = CameraController.getInstance(mContext);
-                mCameraController.initCamera(videoSurface);
-                mCameraController.openCamera();
-
-
                 mGLThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -119,14 +110,10 @@ public class VideoSurfaceProcessor extends BaseGLSL {
             //todo error handling
             return;
         }
-
-
-
-
         final Point size = new Point();
         size.x = mPreviewSize.getHeight();
         size.y = mPreviewSize.getWidth();
-        mTextureProvider.setOnFrameAvailableListener(mInputSurfaceTexture);
+
         CamLog.d(TAG, "Provider Opened . data size (x,y)=" + size.x + "/" + size.y);
         if (size.x <= 0 || size.y <= 0) {
             //todo error handling

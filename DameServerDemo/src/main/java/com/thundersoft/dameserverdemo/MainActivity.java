@@ -32,10 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mVideoController = VideoController.getInstance();
-        mVideoController.init(this);
-
-
-
 
     }
 
