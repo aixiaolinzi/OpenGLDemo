@@ -1,8 +1,5 @@
 package com.thundersoft.dameserverdemo.video.filter;
 
-import android.content.res.Resources;
-
-
 import com.thundersoft.dameserverdemo.video.base.BaseFilter;
 
 import java.util.ArrayList;

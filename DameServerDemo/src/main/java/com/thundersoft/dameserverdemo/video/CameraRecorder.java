@@ -7,14 +7,14 @@ import com.thundersoft.dameserverdemo.video.core.Renderer;
 import com.thundersoft.dameserverdemo.video.media.SoundRecorder;
 import com.thundersoft.dameserverdemo.video.media.SurfaceEncoder;
 import com.thundersoft.dameserverdemo.video.media.VideoSurfaceProcessor;
-import com.thundersoft.dameserverdemo.video.media.store.IHardStore;
+import com.thundersoft.dameserverdemo.video.media.store.IStore;
 import com.thundersoft.dameserverdemo.video.media.store.StrengthenMp4MuxStore;
 
 
 public class CameraRecorder {
     private VideoSurfaceProcessor mTextureProcessor;
 
-    private IHardStore mMuxer1;
+    private IStore mMuxer1;
     private SurfaceEncoder mSurfaceStore1;
     private SoundRecorder mSoundRecord1;
 

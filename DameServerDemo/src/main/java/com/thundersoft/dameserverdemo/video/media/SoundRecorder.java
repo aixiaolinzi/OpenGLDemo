@@ -11,7 +11,7 @@ import android.util.Log;
 
 
 import com.thundersoft.dameserverdemo.video.media.store.HardMediaData;
-import com.thundersoft.dameserverdemo.video.media.store.IHardStore;
+import com.thundersoft.dameserverdemo.video.media.store.IStore;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,13 +29,13 @@ public class SoundRecorder {
     private MediaCodec mAudioEncoder;
     private MediaConfig mConfig = new MediaConfig();
     private boolean isStarted = false;
-    private IHardStore mStore;
+    private IStore mStore;
     private static final int TIME_OUT = 1000;
     private int mAudioTrack = -1;
     private long startTime = 0;
     private boolean stopFlag = false;
 
-    public SoundRecorder(IHardStore store) {
+    public SoundRecorder(IStore store) {
         this.mStore = store;
     }
 

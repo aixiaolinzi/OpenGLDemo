@@ -9,7 +9,7 @@ import android.opengl.EGLSurface;
 import com.thundersoft.dameserverdemo.video.CamLog;
 import com.thundersoft.dameserverdemo.video.core.RenderBean;
 import com.thundersoft.dameserverdemo.video.media.store.HardMediaData;
-import com.thundersoft.dameserverdemo.video.media.store.IHardStore;
+import com.thundersoft.dameserverdemo.video.media.store.IStore;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -25,7 +25,7 @@ public class SurfaceEncoder extends SurfaceShower {
     private boolean isEncodeStarted = false;
     private static final int TIME_OUT = 1000;
 
-    private IHardStore mStore;
+    private IStore mStore;
     private int mVideoTrack = -1;
 
     private long startTime = -1;
@@ -62,7 +62,7 @@ public class SurfaceEncoder extends SurfaceShower {
         this.mConfig = config;
     }
 
-    public void setStore(IHardStore store) {
+    public void setStore(IStore store) {
         this.mStore = store;
     }
 

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * StrengthenMp4MuxStore
  */
-public class StrengthenMp4MuxStore implements IHardStore {
+public class StrengthenMp4MuxStore implements IStore<MediaFormat, HardMediaData> {
 
     private final String tag = getClass().getSimpleName();
     private MediaMuxer mMuxer;
@@ -138,8 +138,4 @@ public class StrengthenMp4MuxStore implements IHardStore {
         return 0;
     }
 
-    @Override
-    public void setOutputPath(String path) {
-        this.path = path;
-    }
 }

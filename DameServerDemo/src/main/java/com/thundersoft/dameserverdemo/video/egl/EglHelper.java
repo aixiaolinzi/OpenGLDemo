@@ -77,18 +77,13 @@ public class EglHelper {
         return context;
     }
 
-    public EGLSurface createWindowSurface(EGLConfig config, Object surface) {
-        return EGL14.eglCreateWindowSurface(mEGLDisplay, config, surface, new int[]{EGL14.EGL_NONE}, 0);
-    }
+
 
     public EGLSurface createWindowSurface(Object surface) {
         mEGLSurface = EGL14.eglCreateWindowSurface(mEGLDisplay, mEGLConfig, surface, new int[]{EGL14.EGL_NONE}, 0);
         return mEGLSurface;
     }
 
-    public EGLSurface createPBufferSurface(EGLConfig config, int width, int height) {
-        return EGL14.eglCreatePbufferSurface(mEGLDisplay, config, new int[]{EGL14.EGL_WIDTH, width, EGL14.EGL_HEIGHT, height, EGL14.EGL_NONE}, 0);
-    }
 
     public boolean createGLESWithSurface(EGLConfigAttrs attrs, EGLContextAttrs ctxAttrs, Object surface) {
         EGLConfig config = getConfig(attrs.surfaceType(EGL14.EGL_WINDOW_BIT).makeDefault(true));
@@ -134,44 +129,8 @@ public class EglHelper {
         EGLExt.eglPresentationTimeANDROID(mEGLDisplay, surface, time);
     }
 
-    public EGLSurface createGLESWithPBuffer(EGLConfigAttrs attrs, EGLContextAttrs ctxAttrs, int width, int height) {
-        EGLConfig config = getConfig(attrs.surfaceType(EGL14.EGL_PBUFFER_BIT));
-        if (config == null) {
-            log("getConfig failed : " + EGL14.eglGetError());
-            return null;
-        }
-        EGLContext eglContext = createContext(config, EGL14.EGL_NO_CONTEXT, ctxAttrs);
-        if (eglContext == EGL14.EGL_NO_CONTEXT) {
-            log("createContext failed : " + EGL14.eglGetError());
-            return null;
-        }
-        EGLSurface eglSurface = createPBufferSurface(config, width, height);
-        if (eglSurface == EGL14.EGL_NO_SURFACE) {
-            log("createWindowSurface failed : " + EGL14.eglGetError());
-            return null;
-        }
-        if (!EGL14.eglMakeCurrent(mEGLDisplay, eglSurface, eglSurface, eglContext)) {
-            log("eglMakeCurrent failed : " + EGL14.eglGetError());
-            return null;
-        }
-        return eglSurface;
-    }
-
     public void swapBuffers(EGLSurface surface) {
         EGL14.eglSwapBuffers(mEGLDisplay, surface);
-    }
-
-    public boolean destroyGLES(EGLSurface surface, EGLContext context) {
-        EGL14.eglMakeCurrent(mEGLDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
-        if (surface != null) {
-            EGL14.eglDestroySurface(mEGLDisplay, surface);
-        }
-        if (context != null) {
-            EGL14.eglDestroyContext(mEGLDisplay, context);
-        }
-        EGL14.eglTerminate(mEGLDisplay);
-        log("gl destroy gles");
-        return true;
     }
 
     public void destroySurface(EGLSurface surface) {
