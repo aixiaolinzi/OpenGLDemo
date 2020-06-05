@@ -2,6 +2,9 @@ package com.thundersoft.dameserverdemo.video.egl;
 
 import javax.microedition.khronos.egl.EGL10;
 
+/**
+ * 指定使用上下文使用的属性列表.
+ */
 public class EGLContextAttrs {
 
 
