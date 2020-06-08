@@ -1,1 +1,1 @@
-include ':app', ':openGLES20Study', ':openGLVideoRecord', ':waterMark', ':openGLDeep', ':DameServerDemo'
+include ':app', ':openGLES20Study', ':openGLVideoRecord', ':waterMark', ':openGLDeep'
