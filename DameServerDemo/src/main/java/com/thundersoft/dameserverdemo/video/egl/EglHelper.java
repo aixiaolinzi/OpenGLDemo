@@ -124,11 +124,28 @@ public class EglHelper {
     }
 
 
+    /**
+     * 由于MediaCodec的设计是面向实时视频画面流编码的使用场景，所以MediaCodec会根据用户向其输入画面的速度来对编码的速度进行调节。
+     * 如果我们不通过`eglPresentationTimeANDROID`来在编码之前对画面的时间戳进行设置，
+     * 那么MediaCodec往往会将我们向其输入画面的速度默认为实时速度，来对编码速度进行调节。
+     * 这种调节会造成码率降低，视频画面清晰度降低。
+     *
+     * 我们在运行完OpenGL相关绘制命令，在调用`swapbuffer`之前需要调用`eglPresentationTimeANDROID`接口来设置当前帧的时间戳。
+     * @param surface
+     * @param time
+     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setPresentationTime(EGLSurface surface, long time) {
         EGLExt.eglPresentationTimeANDROID(mEGLDisplay, surface, time);
     }
 
+
+    /**
+     * 对于SwapBuffers，SwapBuffer命令只是把前台和后台的缓冲区指针交换一下而已也就是把前台的内容变成后台缓冲的内容，
+     * 把后台的缓冲内容换到了前台这个函数它本身并不对换过来的成为了后台的buffer做清理工作，所以每帧都glClear一次，
+     * 然后再绘制，而后再SwapBuffers。
+     * @param surface
+     */
     public void swapBuffers(EGLSurface surface) {
         EGL14.eglSwapBuffers(mEGLDisplay, surface);
     }
