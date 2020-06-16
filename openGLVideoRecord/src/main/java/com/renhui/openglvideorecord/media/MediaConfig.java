@@ -11,8 +11,8 @@ public class MediaConfig {
     // 视频配置参数
     public class Video {
         public String mime = "video/avc";
-        public int width = 1080;
-        public int height = 1920;
+        public int width = 720;
+        public int height = 1280;
         public int frameRate = 24;
         public int iframe = 1;
         public int bitrate = 1177600;

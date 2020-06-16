@@ -3,6 +3,7 @@ package com.renhui.openglvideorecord;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 mCamera.setRenderer(filter);
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.image);
                 filter.addFilter(new WaterMarkFilter().
-                        setMarkPosition(125, 600, 227 * 2, 39 * 2).setMark(bitmap));
+                        setMarkPosition(125, 600, 280 * 2, 39 * 2).setMark(bitmap));
 
             }
 
@@ -101,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                 mCamera.close();
             }
         });
+
+        setFullScreenConfigs();
     }
 
     @Override
@@ -155,5 +158,17 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                    }, 1000);
         }
+    }
+
+
+
+    private void setFullScreenConfigs() {
+        int flag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getWindow().getDecorView().setSystemUiVisibility(flag);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
 }

@@ -64,7 +64,7 @@ public class WaterMarkFilter extends LazyFilter {
         super.onDraw();
         if (markTextureId != -1) {
             GLES20.glGetIntegerv(GLES20.GL_VIEWPORT, viewPort, 0);
-            GLES20.glViewport(markPort[0], mHeight - markPort[3] - markPort[1], markPort[2], markPort[3]);
+            GLES20.glViewport(192, 0, markPort[2], markPort[3]);
 
             GLES20.glEnable(GLES20.GL_BLEND);
             GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);

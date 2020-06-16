@@ -1,14 +1,15 @@
 package com.thundersoft.gltest;
 
+import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         m_glSurfaceView.setRenderer(glRender);
         m_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         setContentView(m_glSurfaceView);
+        setFullScreenConfigs();
     }
 
     @Override
@@ -66,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+    private void setFullScreenConfigs() {
+        int flag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getWindow().getDecorView().setSystemUiVisibility(flag);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+    }
 
 
 }
