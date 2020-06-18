@@ -205,6 +205,13 @@ public class BaseFilter extends BaseGLSL implements Renderer {
      * 设置其他扩展数据
      */
     protected void onSetExpandData() {
+
+//        glUniformMatrix4fv：通过变量（uniform修饰的变量）引用将一致变量值传入渲染管线。
+//        location : uniform的位置。
+//        count : 需要加载数据的数组元素的数量或者需要修改的矩阵的数量。
+//        transpose : 指明矩阵是列优先(column major)矩阵（GL_FALSE）还是行优先(row major)矩阵（GL_TRUE）。
+//        value : 指向由count个元素的数组的指针。
+
         GLES20.glUniformMatrix4fv(mGLVertexMatrix, 1, false, mVertexMatrix, 0);
         GLES20.glUniformMatrix4fv(mGLTextureMatrix, 1, false, mTextureMatrix, 0);
         if (isUseSize) {
