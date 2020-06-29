@@ -21,12 +21,12 @@ import java.util.concurrent.Executors;
  */
 public class SoundRecorder {
 
-    private AudioRecord mRecord;
+    private AudioRecord mAudioRecord;
     private int mRecordBufferSize = 0;
     private int mRecordSampleRate = 48000;   //音频采样率
     private int mRecordChannelConfig = AudioFormat.CHANNEL_IN_STEREO;   //音频录制通道,默认为立体声
     private int mRecordAudioFormat = AudioFormat.ENCODING_PCM_16BIT; //音频录制格式，默认为PCM16Bit
-    private MediaCodec mAudioEncoder;
+    private MediaCodec mAudioMediaCodec;
     private MediaConfig mConfig = new MediaConfig();
     private boolean isStarted = false;
     private IHardStore mStore;
@@ -48,13 +48,13 @@ public class SoundRecorder {
             stopFlag = false;
 
             mRecordBufferSize = AudioRecord.getMinBufferSize(mRecordSampleRate, mRecordChannelConfig, mRecordAudioFormat) * 2;
-            mRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, mRecordSampleRate, mRecordChannelConfig, mRecordAudioFormat, mRecordBufferSize);
-            mRecord.startRecording();
+            mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, mRecordSampleRate, mRecordChannelConfig, mRecordAudioFormat, mRecordBufferSize);
+            mAudioRecord.startRecording();
             try {
                 MediaFormat format = convertAudioConfigToFormat(mConfig.mAudio);
-                mAudioEncoder = MediaCodec.createEncoderByType(format.getString(MediaFormat.KEY_MIME));
-                mAudioEncoder.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
-                mAudioEncoder.start();
+                mAudioMediaCodec = MediaCodec.createEncoderByType(format.getString(MediaFormat.KEY_MIME));
+                mAudioMediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+                mAudioMediaCodec.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -67,14 +67,14 @@ public class SoundRecorder {
                     audioEncodeStep(true);
                     Log.e("wuwang", "audio stop");
                     if (isStarted) {
-                        mRecord.stop();
-                        mRecord.release();
-                        mRecord = null;
+                        mAudioRecord.stop();
+                        mAudioRecord.release();
+                        mAudioRecord = null;
                     }
-                    if (mAudioEncoder != null) {
-                        mAudioEncoder.stop();
-                        mAudioEncoder.release();
-                        mAudioEncoder = null;
+                    if (mAudioMediaCodec != null) {
+                        mAudioMediaCodec.stop();
+                        mAudioMediaCodec.release();
+                        mAudioMediaCodec = null;
                     }
                     isStarted = false;
                 }
@@ -88,25 +88,25 @@ public class SoundRecorder {
     private synchronized boolean audioEncodeStep(boolean isEnd) {
         if (isStarted) {
             Log.d("SoundRecorder", "audioEncodeStep");
-            int inputIndex = mAudioEncoder.dequeueInputBuffer(TIME_OUT);
+            int inputIndex = mAudioMediaCodec.dequeueInputBuffer(TIME_OUT);
             if (inputIndex >= 0) {
-                ByteBuffer buffer = CodecUtil.getInputBuffer(mAudioEncoder, inputIndex);
+                ByteBuffer buffer = CodecUtil.getInputBuffer(mAudioMediaCodec, inputIndex);
                 buffer.clear();
                 long time = (SystemClock.elapsedRealtimeNanos() - startTime) / 1000;
-                int length = mRecord.read(buffer, mRecordBufferSize);
+                int length = mAudioRecord.read(buffer, mRecordBufferSize);
                 if (length >= 0) {
-                    mAudioEncoder.queueInputBuffer(inputIndex, 0, length, time,
+                    mAudioMediaCodec.queueInputBuffer(inputIndex, 0, length, time,
                             isEnd ? MediaCodec.BUFFER_FLAG_END_OF_STREAM : 0);
                 }
             }
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             while (true) {
-                int outputIndex = mAudioEncoder.dequeueOutputBuffer(info, TIME_OUT);
+                int outputIndex = mAudioMediaCodec.dequeueOutputBuffer(info, TIME_OUT);
                 if (outputIndex >= 0) {
                     if (mStore != null) {
-                        mStore.addData(mAudioTrack, new HardMediaData(CodecUtil.getOutputBuffer(mAudioEncoder, outputIndex), info));
+                        mStore.addData(mAudioTrack, new HardMediaData(CodecUtil.getOutputBuffer(mAudioMediaCodec, outputIndex), info));
                     }
-                    mAudioEncoder.releaseOutputBuffer(outputIndex, false);
+                    mAudioMediaCodec.releaseOutputBuffer(outputIndex, false);
                     if (info.flags == MediaCodec.BUFFER_FLAG_END_OF_STREAM) {
                         Log.d("SoundRecorder", "CameraRecorder get audio encode end of stream");
                         stop();
@@ -115,8 +115,8 @@ public class SoundRecorder {
                 } else if (outputIndex == MediaCodec.INFO_TRY_AGAIN_LATER) {
                     break;
                 } else if (outputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                    Log.d("SoundRecorder", "get audio output format changed ->" + mAudioEncoder.getOutputFormat().toString());
-                    mAudioTrack = mStore.addTrack(mAudioEncoder.getOutputFormat());
+                    Log.d("SoundRecorder", "get audio output format changed ->" + mAudioMediaCodec.getOutputFormat().toString());
+                    mAudioTrack = mStore.addTrack(mAudioMediaCodec.getOutputFormat());
                 }
             }
         }
