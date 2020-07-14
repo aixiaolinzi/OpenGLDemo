@@ -163,10 +163,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void StartVideo() {
-        mHander.postDelayed(startNext, 30000);
+        mHander.postDelayed(startNext, 10000);
         isRecordOpen = !isRecordOpen;
         mTvRecord.setText(isRecordOpen ? "使用2录制" : "使用1录制");
-        String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test" + index++ + ".mp4";
+        String tempPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test/test" + index++ + ".mp4";
         if (isRecordOpen) {
             mCamera.setOutputPath1(tempPath);
             mCamera.startRecord1();
@@ -199,5 +199,10 @@ public class MainActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         getWindow().getDecorView().setSystemUiVisibility(flag);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
+    }
+
+    public void onBack(View view) {
+
+        finish();
     }
 }
