@@ -16,7 +16,7 @@ import java.nio.ByteBuffer;
 /**
  * SurfaceEncoder 从surface上进行硬编码，通过{@link #setStore(IHardStore)}来设置存储器进行存储
  */
-public class SurfaceEncoder extends SurfaceShower {
+public class SurfaceEncoder extends SurfaceShower1 {
 
     private final String TAG = "SurfaceEncoder";
     private MediaConfig mConfig = new MediaConfig();

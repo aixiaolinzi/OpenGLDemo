@@ -9,7 +9,6 @@ import com.renhui.openglvideorecord.CamLog;
 import com.renhui.openglvideorecord.core.RenderBean;
 import com.renhui.openglvideorecord.media.CodecUtil;
 import com.renhui.openglvideorecord.media.MediaConfig;
-import com.renhui.openglvideorecord.media.SurfaceShower;
 import com.renhui.openglvideorecord.media.store.HardMediaData;
 import com.renhui.openglvideorecord.media.store.IHardStore;
 
@@ -19,7 +18,7 @@ import java.nio.ByteBuffer;
 /**
  * SurfaceEncoder 从surface上进行硬编码，通过{@link #setStore(IHardStore)}来设置存储器进行存储
  */
-public class SurfaceEncoder2 extends SurfaceShower {
+public class SurfaceEncoder2 extends SurfaceShower2 {
 
     private final String TAG = "SurfaceEncoder";
     private MediaConfig mConfig = new MediaConfig();
