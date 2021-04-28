@@ -95,8 +95,8 @@ public class TestImageRenderer extends BaseGLSL implements GLSurfaceView.Rendere
 
 
     private byte[] mYuvDate;
-    private int mWidth = 3456;
-    private int mHeight = 3456;
+    private int mWidth = 1440;
+    private int mHeight = 1080;
 
     private int[] textureId;
 

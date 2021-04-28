@@ -32,7 +32,8 @@ public class ViewActivity extends AppCompatActivity {
             glSurfaceView = new GLSurfaceView(this);
             glSurfaceView.setEGLContextClientVersion(2);
             //设置自己的Render.Render 内进行图形的绘制
-            glSurfaceView.setRenderer(new TextureFilterShapeRender(this));
+//            glSurfaceView.setRenderer(new TextureFilterShapeRender(this));
+            glSurfaceView.setRenderer(new Texture2DShapeRender(this));
             isRenderSet = true;
             setContentView(glSurfaceView);
         } else {
